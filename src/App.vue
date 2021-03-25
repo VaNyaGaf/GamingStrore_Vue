@@ -1,26 +1,47 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <Header />
+  <router-view></router-view>>
+  <GameList :games=games />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Header from "./components/Header.vue";
+import GameList from "./components/GameList.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    Header,
+    GameList
+  },
+  methods: {
+    async fetchGames() {
+      const res = await fetch('http://localhost:8081/games')
+      const data = await res.json();
+        
+      return data;
+    }
+  },
+  data() {
+    return {
+      games: []
+    }
+  },
+  async created() {
+    this.games = await this.fetchGames();
   }
 };
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  * {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
 }
+
+body {
+    background-image: url(https://wallpaper.dog/large/10936821.jpg);
+}
+
 </style>
